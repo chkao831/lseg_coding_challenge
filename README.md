@@ -6,8 +6,13 @@ This program runs lightshows, demonstrated on a squared grid with default size o
 
 The program contains two parts. 
 - The first part (the '**System 1**') involves operations that switch on/off the lights and invert the lights, and would calculate how many lights are on at the end. 
+  - **turn on**: Turns on the light(s). Lights that were already on are unaffected.
+  - **turn off**: Turns off the light(s). Lights that were already off are unaffected.
+  - **toggle**: Inverts the light(s) (i.e. 1 to 0 and 0 to 1). 
 - The second part (the '**System 2**') is an upgraded version of **System 1**. The lights in **System 2** have individual brightness levels, with a brightness level of 0 or higher. It would then calculates the sum of lights state (i.e. the brightness) at the end. 
-
+  - **turn on**: Increases the brightness of light(s) by 1.
+  - **turn off**: Decreases the brightness of light(s) by 1, with a minimum of 0.
+  - **toggle**: Increases the brightness of light(s) by 2.
 All lights start turned off for both systems. 
 
 ## Input format
@@ -16,7 +21,7 @@ The sequence of instructions are written line-by-line in a text file. Each line 
 As an example, for a 1000x1000 grid, the corners are at `(0,0)`, `(999,0)`, `(0,999)` and `(999,999)`. An instruction `(0,0) through (2,2)` refers to the 9 lights in a 3x3 grid in the bottom left corner. 
 
 Sample commands from a text file:
-```
+```py
 turn on 0,0 through 999,999
 turn off 499,499 through 500,500
 toggle 0,499 through 999,500
