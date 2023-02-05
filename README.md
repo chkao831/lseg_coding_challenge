@@ -13,6 +13,7 @@ The program contains two parts.
   - **turn on**: Increases the brightness of light(s) by 1.
   - **turn off**: Decreases the brightness of light(s) by 1, with a minimum of 0.
   - **toggle**: Increases the brightness of light(s) by 2.
+  
 All lights start turned off for both systems. 
 
 ## Input format
