@@ -42,7 +42,7 @@ $ pip install -r requirements.txt
   * python>=3.10.9
 
 ## Usage
-Please be noted that all input files should be **in the format of .txt**, and **should be put under the folder** `lseg_coding_challenge/data/` for the program to function properly. 
+Please be noted that all input files should be **in the format of .txt**, and **should be put under the folder** `lseg_coding_challenge-main/data/` for the program to function properly. 
 
 ```py
 usage: python3 -m src.main [-h] [--system {1,2}] [--grid GRID] input
