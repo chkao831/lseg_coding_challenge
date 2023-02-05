@@ -15,14 +15,14 @@ The sequence of instructions are written line-by-line in a text file. Each line 
 
 As an example, for a 1000x1000 grid, the corners are at `(0,0)`, `(999,0)`, `(0,999)` and `(999,999)`. An instruction `(0,0) through (2,2)` refers to the 9 lights in a 3x3 grid in the bottom left corner. 
 
-Sample commands in a text file:
+Sample commands from a text file:
 ```commandline
 turn on 0,0 through 999,999
 turn off 499,499 through 500,500
 toggle 0,499 through 999,500
 ```
 
-Please ensure that the value of each coordinate pair should fall between 0 and grid_size-1 (by default, 999), inclusive. Otherwise, by the error handling mechanism, values out of such range would be detected as invalid. 
+Please ensure that the value of each coordinate pair should fall between `0` and `grid_size-1` (by default, 999), inclusive. Otherwise, by the error handling mechanism, values out of such range would be detected as invalid. 
 
 ## Setup
 ```
@@ -54,34 +54,32 @@ options:
                   Default: 1000.
 ```
 
-For example, to run the program with an input file called `sample_input.txt` (for system 1 by default), 
+For example, to run the program with an input file called `sample_input.txt` (for System 1 by default), 
 ```commandline
 cd lseg_coding_challenge
 python3 -m src.main sample_input.txt
 ```
-The output would then be printed to the console such as the following, 
-```commandline
-INFO: 2023-02-06 03:42:24:  [System 1] The final brightness is 998004.
-```
-To run the same file for system 2,
+The output would then be printed to the console such as the following, \
+`INFO: 2023-02-06 03:42:24:  [System 1] The final brightness is 998004.`
+
+To run the same file for System 2,
 ```commandline
 python3 -m src.main sample_input.txt  --system 2
 ```
-which yields an output of 
-```commandline
-INFO: 2023-02-06 03:44:18:  [System 2] The final brightness is 1003996.
-```
-As illustrated in the usage, I designed an additional, optional argument `--grid` for better flexibility given an another squared grid with size length other than 1000. 
+which yields an output of `INFO: 2023-02-06 03:44:18:  [System 2] The final brightness is 1003996.`
+
+
+As illustrated in the usage, I designed an additional, optional argument `--grid` for better flexibility given a squared grid with size length other than 1000. However, when specifying this argument, please be noted that the coordinates' value in the input data file could not exceed `[0,grid_size)` to avoid ValueError.
 
 ## Test
 ```commandline
-cd InstaDeep_Coding_Challenge
+cd lseg_coding_challenge
 python3 -m pytest -v
 ```
 The `-v` flag is optional. It controls the verbosity of pytest output in various aspects: test session progress, assertion details when tests fail, fixtures details, etc. For shorter console output, simply ignore the flag.
 
 Upon the end of the test, the result is ideally shown as follows,
-```commandline
+```python3
 =========================== test session starts ===========================
 
 collected 10 items
@@ -102,7 +100,7 @@ src/test/test_main.py::TestMain::test_out_of_range_input_exception PASSED [100%]
 
 ## Technical Notes
 ### Structure Design
-```
+```python3
 lseg_coding_challenge/
     data/
     src/
@@ -120,12 +118,22 @@ lseg_coding_challenge/
     README.md
     requirements.txt
 ```
-I utilize `__init__.py` to mark directories as Python package directories. This is for a relatively robust import between modules under the `src` folder. For example, under `main.py`, I do `from .py_lib.io import IOProcessor`. With an (usually) empty file `__init__.py`, Python would look for submodules inside the directory in its attempt of module import. 
+`main` runs the main pipeline, which calls `io` and then `lightshow` or `lightshow_upgraded` in order. 
 
-`main` runs the main pipeline, which calls `io` and `lightshow`/`lightshow_upgraded` in order. 
+I utilize `__init__.py` to mark directories as Python package directories. This is for a relatively robust import between modules under the `src` folder. 
+
+For example, under `main.py`, I do 
+```python3
+from .py_lib.io import IOProcessor
+```
+With an (usually) empty file `__init__.py`, Python would look for submodules inside the directory in its attempt of module import. 
 
 ### Object-oriented Design
-The `LightShowUpgraded` class inherits the `LightShow` class. This is because when I designed the `LightShow` class, I spotted some interchangeable properties between the two. Since the `LightShowUpgraded` refers to an upgraded version of the `LightShow` class, naturally I would think of the possibilities of having the third, fourth shows which may also be extended/upgraded from the first system. With inheritance, the mutual properties may be reused whenever possible and the redundancy is reduced. For different operations between different shows, I simply overrode them in the child class with customization.
+The `LightShowUpgraded` class inherits the `LightShow` class. 
+
+This is because when I designed the `LightShow` class, I spotted some interchangeable properties between the two. Since the `LightShowUpgraded` refers to an upgraded version of the `LightShow` class, naturally I would think of the possibilities of having the third, fourth shows which may also be extended/upgraded from the System 1. 
+
+With inheritance, the mutual properties may be reused whenever possible and the redundancy is reduced. For different operations between different shows, I simply overrode them in the child class with customization.
 
 In addition, another noteworthy advantage of such design is that OOP allows me to write a more organized interface, as illustrated in `main`. Since those two lightshow classes share mutual properties upon their initializations and function calls, the switcher and pipeline under the interface become very neat.   
 
@@ -137,13 +145,13 @@ In addition, another noteworthy advantage of such design is that OOP allows me t
 - `ValueError` is thrown
     - upon invalid entry (line) is processed
         - the only three valid entry formats are the following: (`<int>` denotes a nonnegative integer within `[0,grid_size)`)
-        1. `turn on <int>,<int> through <int>,<int>`
-        2. `turn off <int>,<int> through <int>,<int>`
-        3. `toggle <int>,<int> through <int>,<int>`
+         1. `turn on <int>,<int> through <int>,<int>`
+         2. `turn off <int>,<int> through <int>,<int>`
+         3. `toggle <int>,<int> through <int>,<int>`
         - Please note that there shall not be space between the coordinate values.
         - Any command other than these three would result in ValueError.
     - upon invalid coordinate values/formats
-        - may result from the failure of splitting exactly two values with the comma delimiter    
+        - may result from the failure of splitting exactly two integer values with the comma delimiter.
         - may result from the assertion error for coordinate value out of the `[0,grid_size)` range.
 
 ### Algorithm
