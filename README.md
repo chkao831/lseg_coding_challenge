@@ -32,7 +32,7 @@ Please ensure that the value of each coordinate pair should fall between `0` and
 
 ## Setup
 ```bat
-$ cd lseg_coding_challenge
+$ cd lseg_coding_challenge-main
 $ pip install -r requirements.txt
 ```
 
@@ -61,7 +61,7 @@ options:
 
 For example, to run the program with an input file called `sample_input.txt` (for **System 1** by default), 
 ```bat
-$ cd lseg_coding_challenge
+$ cd lseg_coding_challenge-main
 $ python3 -m src.main sample_input.txt
 ```
 The output would then be printed to the console such as the following, \
@@ -78,7 +78,7 @@ As illustrated in the usage, I designed an additional, optional argument `--grid
 
 ## Test
 ```bat
-$ cd lseg_coding_challenge
+$ cd lseg_coding_challenge-main
 $ python3 -m pytest -v
 ```
 The `-v` flag is optional. It controls the verbosity of pytest output in various aspects: test session progress, assertion details when tests fail, fixtures details, etc. For shorter console output, simply ignore the flag.
@@ -106,7 +106,7 @@ src/test/test_main.py::TestMain::test_out_of_range_input_exception PASSED [100%]
 ## Technical Notes
 ### Structure Design
 ```python3
-lseg_coding_challenge/
+lseg_coding_challenge-main/
     data/
     src/
         py_lib/
